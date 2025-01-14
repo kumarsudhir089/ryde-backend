@@ -32,3 +32,13 @@ async def update_user_route(id: str, user: UserUpdate, db: AsyncIOMotorDatabase 
 async def delete_user_route(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
     await delete_user(id, db)
     return {"message": "User deleted successfully"}
+
+@router.get("/get-friends/{id}")
+async def get_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
+    pass
+
+
+@router.get("/get-nearby-friends/{id}")
+async def get_nearby_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
+    pass
+

@@ -10,3 +10,11 @@ class User(BaseModel):
     address: Optional[str]
     description: Optional[str]
     createdAt: datetime = Field(default_factory=datetime.utcnow)
+    latitude: int = None
+    longitude: int = None
+
+class FriendsRelation(BaseModel):
+    id: str = Field(..., alias="_id", primary_key=True)
+    user_id: str = Field(...)
+    friend_id: str = Field(...)
+    createdAt: datetime = Field(default_factory=datetime.utcnow)

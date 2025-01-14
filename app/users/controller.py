@@ -44,3 +44,10 @@ async def update_user(id: str, user_data: dict, db: AsyncIOMotorDatabase = Depen
 async def delete_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
     user_collection = db.get_collection("users")
     await user_collection.delete_one({"_id": ObjectId(id)})
+
+async def get_friend_list(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
+    pass
+
+
+async def get_nearby_friend_list(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
+    pass
