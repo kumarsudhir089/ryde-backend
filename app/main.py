@@ -2,6 +2,9 @@ import uvicorn
 from fastapi import FastAPI
 from app.database import create_mongo_client
 
+def get_database():
+    return app.mongodb_client
+
 def init_app():
     app = FastAPI(
         title="Ryde Backend",
@@ -22,6 +25,9 @@ def init_app():
     async def health_check():
         return "Welcome to Ryde Backend Server"
     
+    from app.users.routes import router as users_router
+    
+    app.include_router(users_router)    
     return app
 
 app = init_app()
