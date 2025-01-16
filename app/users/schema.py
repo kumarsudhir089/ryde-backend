@@ -24,3 +24,7 @@ class UserResponse(BaseModel):
     address: Optional[str]
     description: Optional[str]
     createdAt: datetime
+    
+class FriendRequestObj(BaseModel):
+    user_id: str
+    friend_id: str

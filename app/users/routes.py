@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Request
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from app.users.schema import UserCreate, UserUpdate, UserResponse
-from app.users.controller import create_user, get_user, update_user, delete_user
+from app.users.schema import UserCreate, UserUpdate, UserResponse, FriendRequestObj
+from app.users.controller import create_user, get_user, update_user, delete_user,make_friends, remove_friends, get_friend_list, get_nearby_friend_list
 from app.main import get_database
 
 router = APIRouter(
@@ -37,26 +37,38 @@ async def update_user_route(id: str, user: UserUpdate, db: AsyncIOMotorDatabase 
         raise HTTPException(status_code=404, detail="User not found")
     return updated_user
 
+
+@router.delete("/remove-friends")
+async def remove_friends_route(connectionObj: FriendRequestObj, db: AsyncIOMotorDatabase = Depends(get_database)):
+    try:
+        await remove_friends(connectionObj, db)
+        return {"message": "Connection Removed!!"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    
 @router.delete("/{id}")
 async def delete_user_route(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
     await delete_user(id, db)
     return {"message": "User deleted successfully"}
 
 
-@router.post("/make-friends/{id}")
-async def get_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
-    pass
-
-
-
-@router.post("/remove-friends/{id}")
-async def get_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
-    pass
+@router.post("/make-friends")
+async def make_friends_route(connectionObj: FriendRequestObj, db: AsyncIOMotorDatabase = Depends(get_database)):
+    try:
+        await make_friends(connectionObj, db)
+        return {"message": "Connected!!"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/get-friends/{id}")
 async def get_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
-    pass
+    try:
+        friendsList = await get_friend_list(id, db)
+        return friendsList
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/get-nearby-friends/{id}")
