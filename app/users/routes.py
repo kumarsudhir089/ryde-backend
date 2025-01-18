@@ -38,7 +38,7 @@ async def update_user_route(id: str, user: UserUpdate, db: AsyncIOMotorDatabase 
     return updated_user
 
 
-@router.delete("/remove-friends")
+@router.delete("/friend")
 async def remove_friends_route(connectionObj: FriendRequestObj, db: AsyncIOMotorDatabase = Depends(get_database)):
     try:
         await remove_friends(connectionObj, db)
@@ -53,7 +53,7 @@ async def delete_user_route(id: str, db: AsyncIOMotorDatabase = Depends(get_data
     return {"message": "User deleted successfully"}
 
 
-@router.post("/make-friends")
+@router.post("/make-friend")
 async def make_friends_route(connectionObj: FriendRequestObj, db: AsyncIOMotorDatabase = Depends(get_database)):
     try:
         await make_friends(connectionObj, db)
@@ -62,7 +62,7 @@ async def make_friends_route(connectionObj: FriendRequestObj, db: AsyncIOMotorDa
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/get-friends/{id}")
+@router.get("/friend/{id}")
 async def get_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
     try:
         friendsList = await get_friend_list(id, db)
@@ -71,7 +71,7 @@ async def get_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_d
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/get-nearby-friends/{id}")
+@router.get("/nearby-friend/{id}")
 async def get_nearby_friends_for_user(id: str, db: AsyncIOMotorDatabase = Depends(get_database)):
     pass
 
